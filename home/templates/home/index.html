@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4 Band Yellow body Resistor Calculator</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #000; /* Black background */
+      color: #fff; /* White text */
+    }
+
+    .container {
+      max-width: 1000px;
+      margin-top: 40px;
+      padding: 30px;
+      background-color: #1a1a1a; /* Dark gray for contrast */
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .form-control, .form-control-file {
+      background-color: #333;
+      color: #fff;
+      border: 1px solid #555;
+    }
+
+    .form-control::placeholder {
+      color: #bbb;
+    }
+
+    .btn-custom {
+      width: 100%;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      margin-top: 30px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ccc;
+    }
+
+    img {
+      border: 1px solid #444;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .alert {
+      background-color: #333;
+      color: #f00;
+      border: 1px solid #900;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+<h1 class="text-center">  Resistor Calculator Application</h1>
+
+
+<p class="text-center" >4 Band <span style="color: Yellow; ">Yellow   </span>body resistor</p>
+
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <hr style="border-top: 1px solid #888;">
+
+      <div class="form-group">
+        <label for="link">Paste Link of Resistor:</label>
+        <input type="text" name="link" id="link" class="form-control" placeholder="https://...">
+      </div>
+
+      <h5>Paste link like this:</h5>
+      <p style="color: #aaa;">https://projectpoint.in/image/cache/catalog/CFR-W5-1E2-180x180.jpg</p>
+
+      <div class="text-center mb-3 font-weight-bold">— OR —</div>
+
+      <div class="form-group">
+        <label for="file">Upload Resistor Image:</label>
+        <input type="file" name="file" id="file" class="form-control-file">
+      </div>
+
+      <h5>Upload Resistor image file like this:</h5>
+      <img src="https://projectpoint.in/image/cache/catalog/CFR-W5-1E2-180x180.jpg" alt="Demo resistor image" class="img-fluid">
+
+      <button type="submit" class="btn btn-primary btn-custom mt-3">Calculate</button>
+
+      {% if error %}
+        <div class="alert alert-danger mt-4">{{ error }}</div>
+      {% endif %}
+        {% if message %}
+        {{message}}
+        {% endif %}
+      {% if raw_image_base64 %}
+        <div class="section-title">Uploaded Image:</div>
+        <img src="data:image/png;base64,{{ raw_image_base64 }}" alt="Uploaded resistor image" class="img-fluid">
+      {% endif %}
+
+      {% if link %}
+        <div class="section-title">Image from Link:</div>
+        <img src="{{ link }}" alt="Uploaded Image" class="img-fluid">
+      {% endif %}
+
+      {% if detected_image %}
+        <div class="section-title">Detected Image:</div>
+        <img src="data:image/png;base64,{{ detected_image }}" alt="Detected resistor bands" class="img-fluid">
+      {% endif %}
+
+      {% if bands %}
+        <div class="section-title">Detected Bands:</div>
+        <p>{{ bands }}</p>
+
+
+      {% endif %}
+
+      {% if resistance %}
+        <div class="section-title">Resistance Result:</div>
+        <p class="font-weight-bold text-success">{{ resistance }}</p>
+      {% endif %}
+    </form>
+  </div>
+
+  <!-- JS dependencies -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
